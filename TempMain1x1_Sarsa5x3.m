@@ -1,5 +1,4 @@
 function TempMain1x1_Sarsa5x3
-addpath('Strategies/');
 n=30;
 total=1e5;
 
