@@ -111,12 +111,12 @@ for p=pInit:n
     
     if saveAgent
         agents{p} = agentA;
-        save(tempArq,'agents','M');
-        movefile(tempArq,nmarqagent);
+        save(tempFile,'agents','M');
+        movefile(tempFile,nmarqagent);
     end
     
-    save(tempArq,'rewarded','p');
-    movefile(tempArq,nmarqGoals);
+    save(tempFile,'rewarded','p');
+    movefile(tempFile,nmarqGoals);
     J.timer = total;
     
 end
