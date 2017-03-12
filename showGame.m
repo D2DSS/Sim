@@ -3,19 +3,12 @@ function showGame( S, M, J )
        	pause(M.delay);
         clf;
 
-   
-
     %PARTE DO CAMPO
     subplot(10,5,[6,50]);
-    
-    
-    
-    
+   
     axis on;grid on;
     xlim([0 M.Nx*M.cellWidth]);
     ylim([0 M.Ny*M.cellWidth]);
-%     set(gca,'XTick',3.5:3:Nx*M.cellWidth);
-%     set(gca,'YTick',3.35:3.05:Ny*M.cellWidth);
 
     set(gca,'XTick',M.cellWidth:M.cellWidth:M.Nx*M.cellWidth);
     set(gca,'YTick',M.cellWidth:M.cellWidth:M.Ny*M.cellWidth);
@@ -28,14 +21,12 @@ function showGame( S, M, J )
     set(field,'FaceColor',[0.0,1.0,0.0]); %VALDINEI
 
     %AREAS DOS GOLS
-%    rectangle('position',[0.51 floor(Ny+Ny/3-1.15) 6 9],'LineWidth',2);
     golA=rectangle('position',[0 (floor(M.Ny/2)*M.cellWidth-M.cellWidth*M.goalWidth) M.cellWidth M.cellWidth*(M.goalWidth*2+1)],'LineWidth',2);
     set(golA,'FaceColor',[0.8,0.8,0.8]); %VALDINEI
-%    rectangle('position',[size(rgbImage,2)-5.5 floor(Ny+Ny/3-1.15) 6 9],'LineWidth',2);
     golB=rectangle('position',[M.Nx*M.cellWidth-M.cellWidth (floor(M.Ny/2)*M.cellWidth-M.cellWidth*M.goalWidth) M.cellWidth M.cellWidth*(M.goalWidth*2+1)],'LineWidth',2);
     set(golB,'FaceColor',[0.4,0.4,0.4]); %VALDINEI
     
-    
+    %Jogadores timeA
     if(M.Ta>0)
         for i=1:M.Ta
             player=rectangle('position',[(S.P{i}.x-1)*M.cellWidth+.5 (S.P{i}.y-1)*M.cellWidth+.5 (M.cellWidth-1) (M.cellWidth-1)],'LineWidth',.1);
@@ -43,7 +34,7 @@ function showGame( S, M, J )
             text((S.P{i}.x-1)*M.cellWidth+1,(S.P{i}.y-1)*M.cellWidth+1,num2str(i));
         end
     end
-    %trio de jogadores timeB
+    %Jogadores timeB
     if (M.Tb>0)
         for i=M.Ta+1:M.Ta+M.Tb
             player=rectangle('position',[(S.P{i}.x-1)*M.cellWidth+.5 (S.P{i}.y-1)*M.cellWidth+.5 (M.cellWidth-1) (M.cellWidth-1)],'LineWidth',.1);
@@ -54,7 +45,6 @@ function showGame( S, M, J )
 
     ball=rectangle('position',[(S.B.x-1)*M.cellWidth+1 (S.B.y-1)*M.cellWidth+1 (M.cellWidth-2) (M.cellWidth-2)],'LineWidth',.1);
     set(ball,'FaceColor',[1,1,1]); %VALDINEI
-
 
     %CIRCULO CENTRAL
     hold on;
