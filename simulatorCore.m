@@ -112,11 +112,11 @@ for p=pInit:n
     if saveAgent
         agents{p} = agentA;
         save(tempFile,'agents','M');
-        movefile(tempFile,nmarqagent);
+        movefile(tempFile,agentStorage);
     end
     
     save(tempFile,'rewarded','p');
-    movefile(tempFile,nmarqGoals);
+    movefile(tempFile,scoreStorage);
     J.timer = total;
     
 end
