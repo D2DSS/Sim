@@ -109,7 +109,7 @@ for p=pInit:n
         end       
     end
     
-    if salvaagent
+    if saveAgent
         agents{p} = agentA;
         save(tempArq,'agents','M');
         movefile(tempArq,nmarqagent);
