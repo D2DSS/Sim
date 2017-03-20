@@ -1,6 +1,7 @@
-%This class sets up variables for parameters of simulation of games in simulator D2DSS
+%%This class sets up variables for parameters of simulation of games in simulator D2DSS
 %	function M = setSimulator(Nx, Ny, Ta, Tb, randAfterGoal)
 % Responsable for vinculates main variables of simulation in M structure
+%%
 function M = setSimulator(Nx, Ny, Ta, Tb, randAfterGoal)
 
     %Probabilities for simulation
