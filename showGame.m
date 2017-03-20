@@ -36,7 +36,7 @@ function showGame( S, M, J )
     if(M.Ta>0)
         for i=1:M.Ta
             player=rectangle('position',[(S.P{i}.x-1)*M.cellWidth+.5 (S.P{i}.y-1)*M.cellWidth+.5 (M.cellWidth-1) (M.cellWidth-1)],'LineWidth',.1);
-            set(player,'FaceColor',[0.7,0.7,0.7]); %VALDINEI
+            set(player,'FaceColor',[0.7,0.7,0.7]);
             text((S.P{i}.x-1)*M.cellWidth+1,(S.P{i}.y-1)*M.cellWidth+1,num2str(i));
         end
     end
@@ -44,13 +44,13 @@ function showGame( S, M, J )
     if (M.Tb>0)
         for i=M.Ta+1:M.Ta+M.Tb
             player=rectangle('position',[(S.P{i}.x-1)*M.cellWidth+.5 (S.P{i}.y-1)*M.cellWidth+.5 (M.cellWidth-1) (M.cellWidth-1)],'LineWidth',.1);
-            set(player,'FaceColor',[0.3,0.3,0.3]); %VALDINEI
+            set(player,'FaceColor',[0.3,0.3,0.3]);
             text((S.P{i}.x-1)*M.cellWidth+1,(S.P{i}.y-1)*M.cellWidth+1,num2str(i));
         end
     end
 
     ball=rectangle('position',[(S.B.x-1)*M.cellWidth+1 (S.B.y-1)*M.cellWidth+1 (M.cellWidth-2) (M.cellWidth-2)],'LineWidth',.1);
-    set(ball,'FaceColor',[1,1,1]); %VALDINEI
+    set(ball,'FaceColor',[1,1,1]);
 
     %Central circle
     hold on;
@@ -58,7 +58,7 @@ function showGame( S, M, J )
     radius=M.cellWidth*1;
     theta=linspace(0,5*pi,numPoints);
     rho=ones(1,numPoints)*radius;
-    [X,Y] = pol2cart(theta,rho); %funcao circular
+    [X,Y] = pol2cart(theta,rho); %circular function
     plot(X+M.Nx/2*M.cellWidth,Y+M.Ny/2*M.cellWidth,'k-','linewidth',2);
 
     %Central mid line
