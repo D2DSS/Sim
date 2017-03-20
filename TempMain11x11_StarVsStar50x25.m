@@ -16,11 +16,11 @@
 %%
 
 function TempMain11x11_StarVsStar50x25
-n=30;
-total=1e5;
+n=30; %number of game simulations (rounds)
+total=1e5; %total of interations of a game (time)
 
-stepbystep=false;
-shows = true;
+stepbystep=false; %wait for a click for execute each state update  (depuration mode)
+shows = true; %enable plotting embed graphical interface
 
 plotPartial = false;
 nIterShow = 1e4;
