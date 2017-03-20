@@ -64,7 +64,7 @@ function agent = CreateAgentB(M) %defines Team B agents
     agent = agentAstar(5,M);  %vinculates instance for agent with this strategy
 end
 
-%method used by agents of team A to choose action to be taken in a state
+%Method used by agents of team A to choose action to be taken in a state
 function action = ChooseActionA(nPlayer,agent,sOld,aOld,reward,sNew,notFirst,timegame)
 action = agent.action(sNew);
 
@@ -73,7 +73,7 @@ action = agent.action(sNew);
     end
 end
 
-% method used by agents of team B to choose action to be taken in a state
+%Method used by agents of team B to choose action to be taken in a state
 function action = ChooseActionB(nPlayer,agent,sOld,aOld,reward,sNew,notFirst,timegame)
     action = agent.action(sNew);
 end
