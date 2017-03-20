@@ -1,13 +1,13 @@
 %% State is a class that encapsulates all data of current state in an enviromental soccer simulation in simulator D2DSS
 %
 %Properties for class state:
-%    B				 Ball coordinate B.x, B.y
-%    P				 Array of coordinates for all players, starting with team A and after with team B .. P(i).x, P(i).y
-%    nP              Value of players in current simulation
-%    B_direct		 Ball direction: 0->Null (Nop), 1->North, 2->South, 3->East, 4->West, 5->Northeastern, 6->Southeastern, 7->Northwestern, 8->Southwest
-%    B_speed		 Defines ball velocity
-%    limits          Deliminate max value retorned by method for factoring()
-%    M				 Structure to store definied literals about current simulation
+%    B				      Ball coordinate B.x, B.y
+%    P				      Array of coordinates for all players, starting with team A and after with team B .. P(i).x, P(i).y
+%    nP                 Value of players in current simulation
+%    B_direct		      Ball direction: 0->Null (Nop), 1->North, 2->South, 3->East, 4->West, 5->Northeastern, 6->Southeastern, 7->Northwestern, 8->Southwest
+%    B_speed		      Defines ball velocity
+%    limits             Deliminates max value retorned by method for factoring()
+%    M				      Structure to store definied literals about current simulation
 %
 %Uses of states methods:c
 %>> S.factor() 			% retorn factors for next state respectively for B.x, B.y, B_direct+1, B_speed+1, P{1}.x, P{1}.y, P{2}.x, P{2}.y
@@ -70,7 +70,6 @@ end
 function factorState = factoringB(G)
     order = [0 1 2 4 3 7 8 5 6];
     factorState = [G.M.Nx-G.B.x+1 G.B.y order(G.B_direct+1)+1 G.B_speed+1];
-%    factorState = [G.B.x G.B.y G.B_direct+1 G.B_speed+1];
     for i=1:G.M.Tb
         factorState = [factorState G.M.Nx-G.P{G.M.Ta+i}.x+1];
         factorState = [factorState G.P{G.M.Ta+i}.y];
@@ -116,22 +115,14 @@ function setFatoradoB(G,factorState)
         k=k+1;
         G.P{i}.y = factorState(k);
     end
-
-    
-%     for i=G.nP:-1:1
-%         k=k+1;
-%         G.P{i}.x = factorState(k);
-%         k=k+1;
-%         G.P{i}.y = factorState(k);
-%     end
 end
 
-
+%Function for uniform distribution of start position for both teams
 function espalhamentoGoal(S,M,left)
     
     posicao = randperm(M.Ny*floor(M.Nx/2));
 
-    %posicao inicial time A
+    %Start position for team A
     for i=1:M.Ta
         S.P{i}.y = mod(posicao(i)-1,M.Ny)+1;
         S.P{i}.x = floor((posicao(i)-1)/M.Ny)+1;
@@ -139,13 +130,13 @@ function espalhamentoGoal(S,M,left)
     
     posicao = randperm(M.Ny*floor(M.Nx/2));
 
-    %posicao inicial time B
+    %Start position for team B
     for i=1:M.Tb
         S.P{i+M.Ta}.y = mod(posicao(i)-1,M.Ny)+1;
         S.P{i+M.Ta}.x = M.Nx - floor((posicao(i)-1)/M.Ny);
     end
 
-    %Posicao inicial da bola
+    %Start ball position
     S.B.x=round(M.Nx/2);
     S.B.y=round(M.Ny/2);
     S.B_speed=0;
@@ -163,26 +154,11 @@ function espalhamentoGoal(S,M,left)
         end
     end
 
-
-    
-%     if M.Tb == 1 && left
-%         S.P{M.Ta+1}.x=round(M.Nx*3/4+1);
-%         S.P{M.Ta+1}.y=round(M.Ny/2);
-%     end
-% 
-%     if M.Ta == 1 && ~left
-%         S.P{1}.x=round(M.Nx*1/4-1);
-%         S.P{1}.y=round(M.Ny/2);
-%     end
-
-end
-
-
+%Function for randomize start position for both teams
 function startPositionRand(S,M)
     
     posicao = randperm(M.Ny*M.Nx);
-
-    %posicao inicial time A e time B
+    
     for i=1:M.Ta+M.Tb
         S.P{i}.y = mod(posicao(i)-1,M.Ny)+1;
         S.P{i}.x = floor((posicao(i)-1)/M.Ny)+1;
@@ -190,7 +166,7 @@ function startPositionRand(S,M)
     
     
 
-    %Posicao inicial da bola
+    %Start ball position
     i=randi(M.Ny*M.Nx);
     S.B.y=mod(i-1,M.Ny)+1;
     S.B.x=floor((i-1)/M.Ny)+1;
@@ -199,7 +175,7 @@ function startPositionRand(S,M)
 
 end
 
-
+%reward of take an action in a specific state S
 function reward = move(S,aNew)
 
         reward = 0;
@@ -211,7 +187,7 @@ function reward = move(S,aNew)
         
         S.moveBall();
         
-        %%% Verifica se houve GOL
+        %Simulator verify if a goals was maded by any team
         if  S.B.y>=(ceil(S.M.Ny/2)-S.M.goalWidth) && S.B.y<=(ceil(S.M.Ny/2)+S.M.goalWidth) && S.B.x==S.M.Nx
             reward = 1;
         elseif S.B.y>=(ceil(S.M.Ny/2)-S.M.goalWidth) && S.B.y<=(ceil(S.M.Ny/2)+S.M.goalWidth) && S.B.x==1
@@ -220,19 +196,17 @@ function reward = move(S,aNew)
 
 end
 
-
+%moveAgent(S,i,a) move agent in a specific state with an action, i is id for player
 function moveAgent(S,i,a)
 
     xBall=S.B.x;
     yBall=S.B.y;
     xNext=S.P{i}.x;
     yNext=S.P{i}.y;      
-    %ficar parado
-    if a==0
+    if a==0 %action null, be stopped no operation (Nop)
         xNext=S.P{i}.x;
         yNext=S.P{i}.y;
-    %norte
-    elseif a==1    
+    elseif a==1 %move north
         if rand < S.M.ProbPlayerMove
             xNext = S.P{i}.x;
             yNext = max(S.P{i}.y-1,1);
@@ -240,8 +214,7 @@ function moveAgent(S,i,a)
             xNext=S.P{i}.x;
             yNext = S.P{i}.y;
         end
-    %sul
-    elseif a==2
+    elseif a==2 %move south
         if rand < S.M.ProbPlayerMove
             xNext=S.P{i}.x;
             yNext = min(S.P{i}.y+1,S.M.Ny);
@@ -249,9 +222,7 @@ function moveAgent(S,i,a)
             xNext=S.P{i}.x;
             yNext = S.P{i}.y;
         end
-
-    %leste
-    elseif a==3
+    elseif a==3 %move east
         if rand < S.M.ProbPlayerMove
             xNext = min(S.P{i}.x+1,S.M.Nx);
             yNext = S.P{i}.y;
@@ -259,8 +230,7 @@ function moveAgent(S,i,a)
             xNext=S.P{i}.x;
             yNext = S.P{i}.y;
         end
-    %oeste
-    elseif a==4  
+    elseif a==4  %move west
         if rand < S.M.ProbPlayerMove
             xNext = max(S.P{i}.x-1,1);
             yNext = S.P{i}.y;
@@ -269,18 +239,18 @@ function moveAgent(S,i,a)
             yNext = S.P{i}.y;
         end
         
-    elseif a>=5 && a<=12
+    elseif a>=5 && a<=12 %Kick in 8 directions (5->North, 6->South, 7->East, 8->West, 9->Northeastern, 10->Southeastern, 11->Northwestern, 12->Southwest)
         if(S.P{i}.x==S.B.x && S.P{i}.y==S.B.y)
             S.B_direct = a-4;
             S.B_speed=S.M.MaxBallVelocity;
         end
-    elseif a==13           
+    elseif a==13 %Tackle for recovery ball if in 4-neighborhood from ball actual position        
         if(S.P{i}.x~=S.B.x || S.P{i}.y~=S.B.y)
             if(sum(abs([S.P{i}.x - S.B.x,  S.P{i}.y - S.B.y]))<=1)
-                if rand < S.M.ProbTackle %a probabilidade de um jogador recuperar a bola estando perto dela eh a mesma estando no mesmo lugar da bola
-                    xBall=S.P{i}.x;  %No minimo deveria levar em conta probabilidade de tackle
+                if rand < S.M.ProbTackle %probability to take a ball in a tackle
+                    xBall=S.P{i}.x;
                     yBall=S.P{i}.y;
-                    S.B_direct = 0;
+                    S.B_direct = 0; %after a take a ball kicked is stopped
                     S.B_speed=0;
                 end
             end
@@ -293,13 +263,13 @@ function moveAgent(S,i,a)
             continue;
         end
 
-        if (xNext == S.P{j}.x && yNext == S.P{j}.y)  %impede que jogadores ocupem a mesma posicao tem que olhar todas as demais coordenadas
+        if (xNext == S.P{j}.x && yNext == S.P{j}.y) %restrict positions of players, so no more than 1 player is possible for one same position x,y (discrete concept)
             xNext = S.P{i}.x;
             yNext = S.P{i}.y;
             break;
         end
     end
-    if S.P{i}.x==S.B.x && S.P{i}.y==S.B.y %bola e jogador estao no mesmo lugar, jogador carrega a bola com probabilidade de ProbBallWithPlayer e perda pra outro jogador
+    if S.P{i}.x==S.B.x && S.P{i}.y==S.B.y %if ball is with player, there is also a probability to carry on ball to next position
         if rand<=S.M.ProbBallWithPlayer
             xBall = xNext;
             yBall = yNext;
@@ -324,15 +294,15 @@ function moveBall(S)
             S.B.y=max(1,S.B.y-S.B_speed);     
         elseif S.B_direct==2                 %S
             S.B.y=min(S.M.Ny,S.B.y+S.B_speed);
-        elseif S.B_direct==3                 %L
+        elseif S.B_direct==3                 %E
             S.B.x=min(S.B.x+S.B_speed,S.M.Nx);
-        elseif S.B_direct==4                 %O
+        elseif S.B_direct==4                 %W
             S.B.x=max(S.B.x-S.B_speed,1);
         elseif S.B_direct==5                 %NE
             if rand(1)<=S.M.ProbBallMoveDiagonal
                 S.B.x=min(S.B.x+S.B_speed,S.M.Nx);
             end
-            if rand(1)<=S.M.ProbBallMoveDiagonal
+            if rand(1)<=S.M.ProbBallMoveDiagonal 
                 S.B.y=max(S.B.y-S.B_speed,1);           
             end
         elseif S.B_direct==6              %SE
@@ -342,14 +312,14 @@ function moveBall(S)
             if rand(1)<=S.M.ProbBallMoveDiagonal
                 S.B.y=min(S.B.y+S.B_speed,S.M.Ny);           
             end
-        elseif S.B_direct==7              %NO
+        elseif S.B_direct==7              %NW
             if rand(1)<=S.M.ProbBallMoveDiagonal
                 S.B.x=max(S.B.x-S.B_speed,1);
             end
             if rand(1)<=S.M.ProbBallMoveDiagonal
                 S.B.y=max(S.B.y-S.B_speed,1);
             end
-        elseif S.B_direct==8              %SO
+        elseif S.B_direct==8              %SW
             if rand(1)<=S.M.ProbBallMoveDiagonal
                 S.B.x=max(S.B.x-S.B_speed,1);
             end
@@ -359,7 +329,7 @@ function moveBall(S)
         end
 
         
-        S.B_speed=max(S.B_speed-1,0); %decaimento da velocidade da bola
+        S.B_speed=max(S.B_speed-1,0); %ball velocity decrement
         if(S.B_speed==0)
             S.B_direct=0;
         end
@@ -375,8 +345,6 @@ function moveBall(S)
         
     end
 
-
 end
-
 end
 end
