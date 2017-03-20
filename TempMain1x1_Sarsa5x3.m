@@ -20,7 +20,7 @@ n=30; %number of game simulations (rounds)
 total=1e5; %total of interations of a game (time) 
 
 stepbystep=false; %wait for a click for execute each state update  (depuration mode)
-shows = true; %start plotting embed graphical interface
+shows = true; %enable plotting embed graphical interface
 
 plotPartial = false;  %determines if partinally plot is maded
 nIterShow = 1e4; %number for update graphical scheme
