@@ -1,3 +1,20 @@
+%% This a sample example of a Main file to invoke simulator D2DSS
+% Using Q-Learning x Rules with A* search techniques
+%
+% One main for use D2DSS Simulator needs:
+%
+	% - Define enviromental variables:
+	% 	int:{n}
+	%	double:{total,nIterShow}
+	%	boolean:{stepbystep,shows,plotPartial,saveAgent}
+	%	String:{scoreStorage,agentStorage,tempFile} 
+%
+	% - Implement methods:
+	%	CreateAgentA(), CreateAgentB(), ChooseActionA(), ChooseActionB()
+%	
+	% - Call for simulatorCore() is needed and save on-demand coding processes is optionally used here 
+%%
+
 function TempMain11x11_StarVsStar50x25
 n=30;
 total=1e5;
