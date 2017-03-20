@@ -16,52 +16,55 @@
 %%
 
 function TempMain1x1_Sarsa5x3
-n=30;
-total=1e5;
+n=30; %number of game simulations (rounds)
+total=1e5; %total of interations of a game (time) 
 
-stepbystep=false;
-shows = true;
+stepbystep=false; %wait for a click for execute each state update  (depuration mode)
+shows = true; %start plotting embed graphical interface
 
-plotPartial = false;
-nIterShow = 1e4;
+plotPartial = false;  %determines if partinally plot is maded
+nIterShow = 1e4; %number for update graphical scheme
 
+%M is instance of simulator.
+%Sets values for simulator configuration
+%(Nx max value, Ny max value, Number of Team A player, Number of Team B player, boolean)
+%bool defines if is a rand start position distribution
 M = setSimulator(5,3,1,1,true);
 
+scoreStorage = 'Data/ScoreSarsaVsStar.mat'; %local for storage sparse matrix of score of games simulated
 
-scoreStorage = 'Data/ScoreSarsaVsStar.mat';
+saveAgent = true; %bool for define if agent instances will be storage after each game simulated
+agentStorage = 'Data/agentSarsaVsStar.mat' %local for storage instance for agents simulated (could be reused in a new execution)
 
+tempFile = 'Data/temp.mat'; %temporary file for storage memory of files while recording (for reduce losses of simulation datas in recording processes)
 
-saveAgent = true;
-agentStorage = 'Data/agentSarsaVsStar.mat'
-
-tempFile = 'Data/temp.mat';
-
-if fileattrib(scoreStorage)
+if fileattrib(scoreStorage) %save on-demand score and agent in EOF (End of file) in local defined while partinally execution of simulation is not finished yet
    load(scoreStorage);
    if saveAgent
         load(agentStorage);
    end
-   pInit = p+1;
+   pInit = p+1; %increment counter for next storage
 else
-   pInit = 1;
+   pInit = 1; %start counter in there is no data before
 end
 
-simulatorCore
+simulatorCore %call for simulator core
 
 end
 
-function agent = CreateAgentA(M)
-    nA = 13;
-    epsilon = 0.1;
-    gamma = 0.99;
-    alpha = 0.1;
-    agent = Sarsa(nA,epsilon,gamma,alpha,M); 
+function agent = CreateAgentA(M) %defines Team A agents
+    nA = 13; %number of actions (starts in 0, but doesn't counts 0 case)
+    epsilon = 0.1; %exploration parameter in RL-Algorithm
+    gamma = 0.99; %discount parameter of learning in RL-Algorithm
+    alpha = 0.1; %learning factor in RL-Algorithm
+    agent = Sarsa(nA,epsilon,gamma,alpha,M); %vinculates instance for agent with this strategy
 end
 
-function agent = CreateAgentB(M)
-    agent = agentAstar(5,M);
+function agent = CreateAgentB(M) %defines Team B agents
+    agent = agentAstar(5,M); %vinculates instance for agent with this strategy
 end
 
+%method used by agents of team A to choose action to be taken in a state
 function action = ChooseActionA(nPlayer,agent,sOld,aOld,reward,sNew,notFirst,timegame)
     action = agent.action(sNew);
 
@@ -70,6 +73,7 @@ function action = ChooseActionA(nPlayer,agent,sOld,aOld,reward,sNew,notFirst,tim
     end
 end
 
+% method used by agents of team B to choose action to be taken in a state
 function action = ChooseActionB(nPlayer,agent,sOld,aOld,reward,sNew,notFirst,timegame)
     action = agent.action(sNew);
 end
