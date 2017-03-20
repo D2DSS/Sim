@@ -1,3 +1,36 @@
+%% State is a class that encapsulates all data of current state in an enviromental soccer simulation in simulator D2DSS
+%
+%Properties for class state:
+%    B				 Ball coordinate B.x, B.y
+%    P				 Array of coordinates for all players, starting with team A and after with team B .. P(i).x, P(i).y
+%    nP              Value of players in current simulation
+%    B_direct		 Ball direction: 0->Null (Nop), 1->North, 2->South, 3->East, 4->West, 5->Northeastern, 6->Southeastern, 7->Northwestern, 8->Southwest
+%    B_speed		 Defines ball velocity
+%    limits          Deliminate max value retorned by method for factoring()
+%    M				 Structure to store definied literals about current simulation
+%
+%Uses of states methods:c
+%>> S.factor() 			% retorn factors for next state respectively for B.x, B.y, B_direct+1, B_speed+1, P{1}.x, P{1}.y, P{2}.x, P{2}.y
+%
+%ans =
+%
+%     8     5     1     1     4     1    10     7
+%
+%>> S.limits % show max limita for each factor
+%
+%ans =
+%
+%    11     7     9     3    11     7    11     7
+%
+%>> S.startPositionGoal(M,true) 	% sets start position in a specificied M stuctured, also could reorganize team distribution in start position
+%>> S.factor() 			% this example ball is stopped in same position of player 1
+%
+%ans =
+%
+%     6     4     1     1     6     4     9     4  
+%
+%>>
+%%
 classdef state < handle
    
         properties 
