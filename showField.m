@@ -1,7 +1,7 @@
 %% This a function of embed Graphical engine used optionally in simulator D2DSS
 % It is responsable for plotting static graphicals structures of soccer field
 % Central circle, goals lines, mid lines of field with aspects defined for parameters
-% function showField(placarA,placarB,Nx,Ny,tempo,rgbImage)
+%       function showField(placarA,placarB,Nx,Ny,tempo,rgbImage)
 %%
 function showField(placarA,placarB,Nx,Ny,tempo,rgbImage)
     gcf
