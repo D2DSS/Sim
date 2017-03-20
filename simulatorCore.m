@@ -1,8 +1,14 @@
-% isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
-aOrder = [0,1,2,4,3,5,6,8,7,11,12,9,10,13];
+%%Script for core of execution in simulator D2DSS
+% It is responsable for resquest and wait action decision to be taken by an agent
+% Schemed as a wait-for scheduler, there is no time limit to turn exceed for waiting for an action be choosen
+% 	so any techniques could be used
+%%
 
-rewarded = sparse(n, total);
-agents = cell(1,n);
+% isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0; %used in Octave compatibility of simulator D2DSS
+aOrder = [0,1,2,4,3,5,6,8,7,11,12,9,10,13]; %order of actions in structure implemented
+
+rewarded = sparse(n, total); %sparse matrix used to store value of game by iteration (-1 opponent goal, +1 team goal, 0 no goal is not literally represented by this structure) 
+agents = cell(1,n); %store agents of team in memory
 
 for p=pInit:n
     agentA = CreateAgentA(M);
@@ -16,8 +22,8 @@ for p=pInit:n
     S=state(M);
     reward = rand-0.5;
     
-    %Posicao inicial dos jogadores
-    if M.randAfterGoal
+% Start position of players (could be random or regular distribution) 
+if M.randAfterGoal
         S.startPositionRand(M);
     else
         S.startPositionGoal(M,reward<0);
@@ -29,15 +35,15 @@ for p=pInit:n
     sNewA= [];
     sNewB= [];
     reward =0;
-
-    %Loop principal
+    
+    %Main loop
     
     horizon = M.horizon;
     
     while J.timer>0
         timegame = timegame+1;
 
-        % De tempos em tempos escolhe uma posicao aleatoria para iniciar
+        % In each horizon sets start positions for all players
         if horizon == 0
             S.startPositionRand(M);
             notFirst = false;
@@ -49,7 +55,7 @@ for p=pInit:n
         
         horizon = horizon-1;
         
-        % escolhe acao para cada jogador
+        % request an action for each player
         aOld = aNew;
         sOldA = sNewA;
         sOldB = sNewB;
@@ -108,7 +114,7 @@ for p=pInit:n
 %             end
         end       
     end
-    
+    % This part made save of files of memory of agents and rewarded that is also score of game simulated    
     if saveAgent
         agents{p} = agentA;
         save(tempFile,'agents','M');
