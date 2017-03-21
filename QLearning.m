@@ -1,3 +1,8 @@
+%% Q-Learning RL-Algorithm implemented in simulator D2DSS
+% Responsible for make policy iteration based on Q-Learning Algorithm
+%       function G = QLearning(A,epsilon,gamma,alpha,M)
+%%
+
 classdef QLearning < handle
     properties
         A
