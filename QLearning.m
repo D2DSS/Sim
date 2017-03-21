@@ -13,7 +13,9 @@ classdef QLearning < handle
         limits
         M
     end
-    methods      
+    methods
+
+%Constructor of agent of type QLearning            
         function G = QLearning(A,epsilon,gamma,alpha,M)
             s = state(M);
             G.A = A;
@@ -24,7 +26,8 @@ classdef QLearning < handle
             G.limits = s.limits;
             G.Q=zeros(prod(s.limits),A);
         end
-        
+
+%Epsilon-greedy exploration step        
         function [a Qcmac] = action(G,s)
             state = G.enumerate(s);
             if rand > G.epsilon
@@ -35,12 +38,14 @@ classdef QLearning < handle
                 a = randi(G.A);
             end
         end
-                  
+
+%Method for enumerating of state needed in policy iteration             
         function state = enumerate(G,s)
             prodFactor = [1 cumprod(G.limits(1:end-1),2)];
             state = sum((s-1).*prodFactor,2) + 1;
         end
-        
+
+%Method for update Q values using QLearning Algorithm
        function update(G,s,a,r,sNext)
             nextState = G.enumerate(sNext);
             qNext = max(G.Q(nextState,:));
@@ -48,8 +53,8 @@ classdef QLearning < handle
             state = G.enumerate(s);
             qOld = G.Q(state,a);
             
-            delta = r+G.gamma*qNext - qOld;
-            G.Q(state,a) = G.Q(state,a) + G.alpha*delta;
+            delta = r+G.gamma*qNext - qOld; %equation of RL-Algorithm
+            G.Q(state,a) = G.Q(state,a) + G.alpha*delta; %policy iteration
        end        
     end
 end
