@@ -1,3 +1,7 @@
+%% Sarsa RL-Algorithm implemented in simulator D2DSS
+% Responsible for make policy optimization based on Sarsa Algorithm
+%       function G = Sarsa(A,epsilon,gamma,alpha,M)
+%%
 classdef Sarsa < handle
     properties
         A
