@@ -2,6 +2,7 @@
 % Responsible for take a random actions of provided max actions index
 %       function G = randomAgent(A)
 %%
+
 classdef randomAgent < handle
     properties
         A
