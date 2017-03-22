@@ -118,7 +118,7 @@ function setFatoradoB(G,factorState)
 end
 
 %Function for uniform distribution of start position for both teams
-function espalhamentoGoal(S,M,left)
+function startPositionGoal(S,M,left)
     
     posicao = randperm(M.Ny*floor(M.Nx/2));
 
@@ -153,7 +153,7 @@ function espalhamentoGoal(S,M,left)
             S.P{M.Ta+1}.y=S.B.y;
         end
     end
-
+end
 %Function for randomize start position for both teams
 function startPositionRand(S,M)
     
@@ -163,9 +163,7 @@ function startPositionRand(S,M)
         S.P{i}.y = mod(posicao(i)-1,M.Ny)+1;
         S.P{i}.x = floor((posicao(i)-1)/M.Ny)+1;
     end
-    
-    
-
+   
     %Start ball position
     i=randi(M.Ny*M.Nx);
     S.B.y=mod(i-1,M.Ny)+1;
