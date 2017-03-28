@@ -24,7 +24,7 @@ load 'Data/ScoreRandVsStar.mat' %File for plotting #4
 index=index+1; label{index} = ['Random X Random'];
 nX = length(rewarded)/nY;plot(nY:nY:nY*nX,mean(reshape(rewarded(1:p,:),p*nY,nX)),colors(mod(index-1,length(colors))+1,:),'linewidth',2);
 
-title('Plot comparing differents strategy scolors in Simulator D2DSS') %title of plot
+title('Plot comparing differents strategy scores in Simulator D2DSS') %title of plot
 ylabel('Goals Difference') %y label
 xlabel('Iterations') %x label
 legend(label,'Location','northwest')
