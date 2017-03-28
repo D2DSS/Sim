@@ -18,7 +18,7 @@ for i=1:p
 end
 
 legend(label)
-title('Plot comparing differents strategy scolors in Simulator D2DSS') %title of plot
+title('Plot comparing differents strategy scores in Simulator D2DSS') %title of plot
 ylabel('Goals Difference') %y label
 xlabel('Iterations') %x label
 legend(label,'Location','northwest')
