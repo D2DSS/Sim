@@ -11,12 +11,18 @@ rewarded = sparse(n, total); %sparse matrix used to store value of game by itera
 agents = cell(1,n); %store agents of team in memory
 
 for p=pInit:n
-    agentA = CreateAgentA(M);
+ 
     Mb = M;
     Mb.Ta = M.Ta;
     Mb.Tb = M.Tb;
+    
+    if Mb.Ta > 0   
+    agentA = CreateAgentA(M);
+    end
+    
+    if Mb.Tb > 0
     agentB = CreateAgentB(Mb);
-
+    end
     J = setGame(total);
     
     S=state(M);
@@ -63,9 +69,12 @@ if M.randAfterGoal
         sNewA = S.factoringA();
         sNewB = S.factoringB();
 
+        if M.Ta > 0
         aNew(1:M.Ta) = ChooseActionA(M.Ta,agentA,sOldA,aOld(1:M.Ta),reward,sNewA,notFirst,timegame/total);
+        end
+        if M.Tb > 0
         aNew(M.Ta+1:end) = aOrder(ChooseActionB(M.Tb,agentB,sOldB,aOld(M.Ta+1:end),reward,sNewB,notFirst,timegame/total)+1);
-
+        end
         notFirst = true;
 
         reward = S.move(aNew);
